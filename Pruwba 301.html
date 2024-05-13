@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Médico - Estado Zulia</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #007bff;
+        }
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #ffffff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Registro Médico - Estado Zulia</h1>
+    
+    <!-- Barra de búsqueda por cédula -->
+    <input type="text" id="searchInput" placeholder="Buscar por número de cédula...">
+    <button onclick="buscarRegistro()">Buscar</button>
+    
+    <!-- Formulario para ingresar datos -->
+    <form id="registroForm">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" required>
+        
+        <label for="edad">Edad:</label>
+        <input type="number" id="edad" required>
+        
+        <label for="cedula">Cédula:</label>
+        <input type="text" id="cedula" required>
+        
+        <label for="diagnostico">Diagnóstico:</label>
+        <textarea id="diagnostico" rows="4" required></textarea>
+        
+        <button type="submit">Guardar Registro</button>
+    </form>
+    
+    <!-- Sección para mostrar registros guardados -->
+    <h2>Registros Guardados:</h2>
+    <ul id="listaRegistros">
+        <!-- Aquí se agregarán registros dinámicamente con JavaScript -->
+    </ul>
+    
+    <!-- Script de JavaScript -->
+    <script>
+        var registros = []; // Array para almacenar los registros
+        
+        // Función para manejar el envío del formulario
+        document.getElementById('registroForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evitar que el formulario se envíe normalmente
+            
+            // Obtener valores del formulario
+            var nombre = document.getElementById('nombre').value;
+            var edad = document.getElementById('edad').value;
+            var cedula = document.getElementById('cedula').value;
+            var diagnostico = document.getElementById('diagnostico').value;
+            
+            // Crear un nuevo registro
+            var nuevoRegistro = {
+                nombre: nombre,
+                edad: edad,
+                cedula: cedula,
+                diagnostico: diagnostico
+            };
+            
+            // Agregar el registro al array
+            registros.push(nuevoRegistro);
+            
+            // Limpiar el formulario
+            document.getElementById('nombre').value = '';
+            document.getElementById('edad').value = '';
+            document.getElementById('cedula').value = '';
+            document.getElementById('diagnostico').value = '';
+            
+            // Actualizar la lista de registros
+            actualizarListaRegistros();
+        });
+        
+        // Función para actualizar la lista de registros en la página
+        function actualizarListaRegistros() {
+            var listaRegistros = document.getElementById('listaRegistros');
+            listaRegistros.innerHTML = ''; // Limpiar la lista
+            
+            // Recorrer todos los registros y agregarlos como elementos de lista
+            registros.forEach(function(registro, index) {
+                var item = document.createElement('li');
+                item.textContent = `Nombre: ${registro.nombre}, Edad: ${registro.edad}, Cédula: ${registro.cedula}, Diagnóstico: ${registro.diagnostico}`;
+                listaRegistros.appendChild(item);
+            });
+        }
+        
+        // Función para buscar un registro por número de cédula
+        function buscarRegistro() {
+            var searchInput = document.getElementById('searchInput').value;
+            
+            // Filtrar registros por número de cédula
+            var resultados = registros.filter(function(registro) {
+                return registro.cedula === searchInput;
+            });
+            
+            // Mostrar los resultados encontrados
+            if (resultados.length > 0) {
+                alert('Registros encontrados:\n' + JSON.stringify(resultados));
+            } else {
+                alert('No se encontraron registros para la cédula especificada.');
+            }
+        }
+    </script>
+</body>
+</html>
